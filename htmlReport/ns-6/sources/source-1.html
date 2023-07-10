@@ -1,0 +1,199 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > FareCalculatorService</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.parkit.parkingsystem.service</a>
+</div>
+
+<h1>Coverage Summary for Class: FareCalculatorService (com.parkit.parkingsystem.service)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">FareCalculatorService</td>
+<td class="coverageStat">
+  <span class="percent">
+    33,3%
+  </span>
+  <span class="absValue">
+    (1/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    4,5%
+  </span>
+  <span class="absValue">
+    (1/22)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">FareCalculatorService$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    25%
+  </span>
+  <span class="absValue">
+    (1/4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    4,3%
+  </span>
+  <span class="absValue">
+    (1/23)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.parkit.parkingsystem.service;
+&nbsp;
+&nbsp;import com.parkit.parkingsystem.constants.Fare;
+&nbsp;import com.parkit.parkingsystem.dao.TicketDAO;
+&nbsp;import com.parkit.parkingsystem.model.ParkingSpot;
+&nbsp;import com.parkit.parkingsystem.model.Ticket;
+&nbsp;
+&nbsp;import java.time.Duration;
+&nbsp; //*** rajout
+&nbsp;import java.time.LocalDateTime; //***rajout
+&nbsp;import java.time.ZoneId; //***rajout
+&nbsp;import java.time.Instant;
+&nbsp;
+&nbsp;import static java.time.LocalDateTime.*;
+&nbsp;
+<b class="fc">&nbsp;public class FareCalculatorService {</b>
+&nbsp;
+&nbsp;
+&nbsp;    public void calculateFare(Ticket ticket){
+<b class="nc">&nbsp;        if( (ticket.getOutTime() == null) || (ticket.getOutTime().before(ticket.getInTime())) ){</b>
+<b class="nc">&nbsp;            throw new IllegalArgumentException(&quot;Out time provided is incorrect:&quot;+ticket.getOutTime().toString());</b>
+&nbsp;        }
+<b class="nc">&nbsp;        double duration = calculateDuration(ticket);</b>
+&nbsp;        double calculation;
+&nbsp;
+<b class="nc">&nbsp;        switch (ticket.getParkingSpot().getParkingType()) {</b>
+&nbsp;            case CAR: {
+<b class="nc">&nbsp;                calculation = (duration - 0.5) * Fare.CAR_RATE_PER_HOUR;</b>
+<b class="nc">&nbsp;                break;</b>
+&nbsp;            }
+&nbsp;            case BIKE: {
+<b class="nc">&nbsp;                calculation = (duration - 0.5) * Fare.BIKE_RATE_PER_HOUR;</b>
+<b class="nc">&nbsp;                break;</b>
+&nbsp;            }
+&nbsp;            default:
+<b class="nc">&nbsp;                throw new IllegalArgumentException(&quot;Unknown Parking Type&quot;);</b>
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        if (duration &lt;= 0.5) {</b>
+<b class="nc">&nbsp;            ticket.setPrice(0);</b>
+&nbsp;        } else {
+<b class="nc">&nbsp;            if(ticket.getDiscount() == true) {</b>
+<b class="nc">&nbsp;                ticket.setPrice(Math.round((calculation - (calculation * 0.05))* 100.0) / 100.0);</b>
+&nbsp;            } else {
+<b class="nc">&nbsp;                ticket.setPrice(Math.round(calculation* 100.0) / 100.0);</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;    }
+&nbsp;    public double calculateDuration (Ticket ticket) {
+<b class="nc">&nbsp;        Instant inH = ticket.getInTime().toInstant();</b>
+<b class="nc">&nbsp;        Instant outH = ticket.getOutTime().toInstant();</b>
+&nbsp;
+<b class="nc">&nbsp;        LocalDateTime inHour = LocalDateTime.ofInstant(inH, ZoneId.systemDefault());</b>
+<b class="nc">&nbsp;        LocalDateTime outHour = LocalDateTime.ofInstant(outH, ZoneId.systemDefault());</b>
+&nbsp;
+<b class="nc">&nbsp;        Duration duration = Duration.between(inHour, outHour);</b>
+&nbsp;
+<b class="nc">&nbsp;        double dr = (double)duration.getSeconds() / 3600;</b>
+<b class="nc">&nbsp;        return dr;</b>
+&nbsp;    }
+&nbsp;}
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-07-03 16:31</div>
+</div>
+</body>
+</html>
