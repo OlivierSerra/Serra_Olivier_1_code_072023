@@ -2,69 +2,55 @@ package com.parkit.parkingsystem.service;
 
 import com.parkit.parkingsystem.constants.Fare;
 import com.parkit.parkingsystem.dao.TicketDAO;
-import com.parkit.parkingsystem.model.ParkingSpot;
 import com.parkit.parkingsystem.model.Ticket;
-
-import java.time.Duration;
-//*** rajout
-import java.time.LocalDateTime; //***rajout
-import java.time.ZoneId; //***rajout
-import java.time.Instant;
-
-import static java.time.LocalDateTime.*;
 
 public class FareCalculatorService {
 
+    public void GetDiscount(){
 
-    public void calculateFare(Ticket ticket){
-        if( (ticket.getOutTime() == null) || (ticket.getOutTime().before(ticket.getInTime())) ){
-            throw new IllegalArgumentException("Out time provided is incorrect:"+ticket.getOutTime().toString());
-        }
+    }
+
+    public void calculateFare(Ticket ticket, boolean discount) {
+        if (ticket.getOutTime() == null || ticket.getOutTime().before(ticket.getInTime()))
+            throw new IllegalArgumentException("Out time provided is incorrect: " + ticket.getOutTime().toString());
+
         double duration = calculateDuration(ticket);
         double calculation;
 
-        switch (ticket.getParkingSpot().getParkingType()) {
-            case CAR: {
-                calculation = (duration - 0.5) * Fare.CAR_RATE_PER_HOUR;
-                break;
-            }
-            case BIKE: {
-                calculation = (duration - 0.5) * Fare.BIKE_RATE_PER_HOUR;
-                break;
-            }
-            default:
-                throw new IllegalArgumentException("Unknown Parking Type");
-        }
-
         if (duration <= 0.5) {
-            ticket.setPrice(0);
+            duration = 0;
         } else {
-            if(ticket.getDiscount() == true) {
-                ticket.setPrice(Math.round((calculation - (calculation * 0.05))* 100.0) / 100.0);
-            } else {
-                ticket.setPrice(Math.round(calculation* 100.0) / 100.0);
+            duration -= 0.5;
+
+            switch (ticket.getParkingSpot().getParkingType()) {
+                case CAR: {
+                    calculation = (duration) * Fare.CAR_RATE_PER_HOUR;//0.75
+                    if (discount == true) {
+                        double discountType = calculation * 0.05;//0.0375
+                       calculation = (duration) * Fare.CAR_RATE_PER_HOUR - discountType; //0.75 - 0.0375 = 0.7125
+                    }
+                    break;
+                }
+                case BIKE: {
+                    calculation = (duration) * Fare.BIKE_RATE_PER_HOUR;//0.5
+                    if (discount == true) {
+                        double discountType = calculation * 0.05;//0.025
+                        calculation = (duration) * Fare.BIKE_RATE_PER_HOUR - discountType;//0.5 -0.025 = 0.475
+                    }
+                    break;
+                }
+                default:
+                    throw new IllegalArgumentException("Unknown Parking Type");
             }
+            ticket.setPrice(calculation);
         }
     }
-    public double calculateDuration (Ticket ticket) {
-        Instant inH = ticket.getInTime().toInstant();
-        Instant outH = ticket.getOutTime().toInstant();
 
-        LocalDateTime inHour = LocalDateTime.ofInstant(inH, ZoneId.systemDefault());
-        LocalDateTime outHour = LocalDateTime.ofInstant(outH, ZoneId.systemDefault());
-
-        Duration duration = Duration.between(inHour, outHour);
-
-        double dr = (double)duration.getSeconds() / 3600;
-        return dr;
+    public double calculateDuration(Ticket ticket) {
+        Long inHour = ticket.getInTime().getTime();
+        Long outHour = ticket.getOutTime().getTime();
+        double duration = (double) (outHour - inHour) / (60 * 60 * 1000);
+        return duration;
     }
 }
-
-
-
-
-
-
-
-
 
