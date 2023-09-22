@@ -39,9 +39,6 @@ public class ParkingService {
                 parkingSpotDAO.updateParking(parkingSpot);
                 Date inTime = new Date();
                 Ticket ticket = new Ticket();
-
-                // ticket.setId(ticketID);
-                //ticket.setDiscount(ticketDAO.getNbTicket(vehicleRegNumber) >= 1);
                 ticket.setParkingSpot(parkingSpot);
                 ticket.setVehicleRegNumber(vehicleRegNumber);
                 ticket.setPrice(0);

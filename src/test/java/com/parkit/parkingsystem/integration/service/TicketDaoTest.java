@@ -1,4 +1,4 @@
-package com.parkit.parkingsystem;
+package com.parkit.parkingsystem.integration.service;
 
 import com.parkit.parkingsystem.constants.ParkingType;
 import com.parkit.parkingsystem.dao.TicketDAO;
@@ -15,14 +15,14 @@ import static org.assertj.core.api.Assertions.*;
 
 public class TicketDaoTest {
 
-    public static TicketDAO underTest;
+    public static TicketDAO TicketTest;
     private static DataBaseTestConfig dataBaseTestConfig = new DataBaseTestConfig();
     private static DataBasePrepareService dataBasePrepareService;
 
     @BeforeAll
     public static void setUp() {
-        underTest = new TicketDAO();
-        underTest.dataBaseConfig = dataBaseTestConfig;
+        TicketTest = new TicketDAO();
+        TicketTest.dataBaseConfig = dataBaseTestConfig;
         dataBasePrepareService = new DataBasePrepareService();
     }
 
@@ -44,17 +44,17 @@ public class TicketDaoTest {
         Date outTime = new Date();
         ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.CAR,false);
         ticket.setId(5);
-        ticket.setVehicleRegNumber("IAMACAR");
+        ticket.setVehicleRegNumber("XY-PMS-TB");
         ticket.setInTime(inTime);
         ticket.setOutTime(outTime);
         ticket.setParkingSpot(parkingSpot);
 
         //WHEN
-        underTest.saveTicket(ticket);
+        TicketTest.saveTicket(ticket);
 
         //THEN
-        Ticket expected = underTest.getTicket("IAMACAR");
-        assertEquals(expected.getVehicleRegNumber(), "IAMACAR");
+        Ticket expected = TicketTest.getTicket("XY-PMS-TB");
+        assertEquals(expected.getVehicleRegNumber(), "XY-PMS-TB");
     }
 
     @Test
@@ -66,17 +66,17 @@ public class TicketDaoTest {
         Date outTime = new Date();
         ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.BIKE,false);
         ticket.setId(5);
-        ticket.setVehicleRegNumber("IAMABIKE");
+        ticket.setVehicleRegNumber("VELIB");
         ticket.setInTime(inTime);
         ticket.setOutTime(outTime);
         ticket.setParkingSpot(parkingSpot);
 
         //WHEN
-        underTest.saveTicket(ticket);
+        TicketTest.saveTicket(ticket);
 
         //THEN
-        Ticket expected = underTest.getTicket("IAMABIKE");
-        assertThat(expected.getVehicleRegNumber()).isEqualTo(ticket.getVehicleRegNumber());
+        Ticket ticketSaved = TicketTest.getTicket("VELIB");
+        assertThat(ticketSaved.getVehicleRegNumber()).isEqualTo(ticket.getVehicleRegNumber());
     }
 
     @Test
@@ -86,29 +86,29 @@ public class TicketDaoTest {
         Date inTime = new Date();
         inTime.setTime( System.currentTimeMillis() - (  60 * 60 * 1000) );
         ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.BIKE,false);
-        ticket.setVehicleRegNumber("TESTA");
+        ticket.setVehicleRegNumber("XY-PMS-TB");
         ticket.setInTime(inTime);
         ticket.setParkingSpot(parkingSpot);
-        underTest.saveTicket(ticket);
+        TicketTest.saveTicket(ticket);
 
         //WHEN
         Date outTime = new Date();
         ticket.setOutTime(outTime);
-        Boolean isUpdated = underTest.updateTicket(ticket);
+        Boolean TicketUpdated = TicketTest.updateTicket(ticket);
 
         //THEN
-        Ticket expected = underTest.getTicket("TESTA");
-        assertThat(isUpdated).isTrue();
+        Ticket expected = TicketTest.getTicket("XY-PMS-TB");
+        assertThat(TicketUpdated).isTrue();
         assertThat(expected.getVehicleRegNumber()).isEqualTo(ticket.getVehicleRegNumber());
     }
 
     @Test
     public void updateTicketWithNoVehicleRegNumber() {
         //GIVEN
-        Ticket ticket = underTest.getTicket(null);
+        Ticket ticket = TicketTest.getTicket(null);
 
         //WHEN
-        boolean result = underTest.updateTicket(ticket);
+        boolean result = TicketTest.updateTicket(ticket);
 
         //THEN
         assertThat(result).isEqualTo(false);
@@ -117,10 +117,10 @@ public class TicketDaoTest {
     @Test
     public void saveTicketWithNoVehicleRegNumber() {
         //GIVEN
-        Ticket ticket = underTest.getTicket(null);
+        Ticket ticket = TicketTest.getTicket(null);
 
         //WHEN
-        boolean result = underTest.saveTicket(ticket);
+        boolean result = TicketTest.saveTicket(ticket);
 
         //THEN
         assertThat(result).isEqualTo(false);
@@ -129,9 +129,10 @@ public class TicketDaoTest {
     @Test
     public void itShouldReturnFalseForNonRecurrentUser(){
         //GIVEN > WHEN
-        Boolean isRecurrent = underTest.isMultipleTicket("FIRSTTIME");
+        Boolean UserManyTime= TicketTest.getNbTicket("XY-ZTU-TB");
+
         //THEN
-        assertThat(isRecurrent).isFalse();
+        assertThat(UserManyTime).isFalse();
     }
 
     @Test
@@ -143,17 +144,17 @@ public class TicketDaoTest {
         Date outTime = new Date();
         ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.CAR,false);
         ticket.setId(5);
-        ticket.setVehicleRegNumber("IAMACAR");
+        ticket.setVehicleRegNumber("AB-UXD-VZ");
         ticket.setInTime(inTime);
         ticket.setOutTime(outTime);
         ticket.setParkingSpot(parkingSpot);
 
         //WHEN
-        underTest.saveTicket(ticket);
-        underTest.saveTicket(ticket);
-        Boolean isRecurrent = underTest.isMultipleTicket("IAMACAR");
+        TicketTest.saveTicket(ticket);
+        TicketTest.saveTicket(ticket);
+        Boolean UserManyTime = TicketTest.getNbTicket("AB-UXD-VZ");
         //THEN
-        assertThat(isRecurrent).isTrue();
+        assertThat(UserManyTime).isTrue();
     }
 
 }

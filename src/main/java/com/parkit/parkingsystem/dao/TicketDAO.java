@@ -112,5 +112,4 @@ public class TicketDAO {
         }
         return nbTicket;
     }
-
 }

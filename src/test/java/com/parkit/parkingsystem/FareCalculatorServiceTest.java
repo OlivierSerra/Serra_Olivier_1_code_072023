@@ -22,12 +22,10 @@ public class FareCalculatorServiceTest {
     public static void setUp() {
         fareCalculatorService = new FareCalculatorService();
     }
-
     @BeforeEach
     public void setUpPerTest() {
         ticket = new Ticket();
     }
-
     @Test
     public void calculateFareCar() {
         //Given
@@ -47,7 +45,6 @@ public class FareCalculatorServiceTest {
         double result = ticket.getPrice();
         assertEquals(result, 0.75);
     }
-
     @Test
     public void calculateFareBike() {
         //Given
@@ -67,7 +64,6 @@ public class FareCalculatorServiceTest {
         //double resultFareBike = ticket.getPrice();
         assertEquals(ticket.getPrice(), 0.5);
     }
-
     @Test
     public void calculateFareUnkownType() {
         //Given
@@ -83,7 +79,6 @@ public class FareCalculatorServiceTest {
         //when
         assertThrows(NullPointerException.class, () -> fareCalculatorService.calculateFare(ticket, false));
     }
-
     @Test
     public void calculateFareBikeWithFutureInTime() {
         Date inTime = new Date();
@@ -96,7 +91,6 @@ public class FareCalculatorServiceTest {
         ticket.setParkingSpot(parkingSpot);
         assertThrows(IllegalArgumentException.class, () -> fareCalculatorService.calculateFare(ticket, false));
     }
-
     @Test
     public void calculateFareBikeWithLessThanOneHourParkingTime() {
         Date inTime = new Date();
@@ -115,7 +109,6 @@ public class FareCalculatorServiceTest {
         //Then
         assertEquals(0.25, ticket.getPrice(),0.000001); // 0.25 = 3/4 h - 30mn gratuites = 0.75-0.5
     }
-
     @Test
     public void calculateFareCarWithLessThanOneHourParkingTime() {
         //Given
@@ -134,7 +127,6 @@ public class FareCalculatorServiceTest {
         //then
         assertEquals(0.375, ticket.getPrice()); // 0.375 = 0.75 -0.25 *1.5 ou 1.5 =CAR.fare
     }
-
     @Test
     public void calculateFareCarWithMoreThanADayParkingTime() {
         Date inTime = new Date();
@@ -150,7 +142,6 @@ public class FareCalculatorServiceTest {
         fareCalculatorService.calculateFare(ticket, false);
         assertEquals((35.25), ticket.getPrice()); // 35.25 = (24 - 0.5)  * 1.5 = (24h - 30 mn gratuites)*car.Fare
     }
-
     @Test
     public void calculateFareCarWithLessThan30minutesParkingTime() {
         //Given
@@ -169,7 +160,6 @@ public class FareCalculatorServiceTest {
         //then
         assertEquals(0.0, ticket.getPrice());
     }
-
     @Test
     public void calculateFareBikeWithLessThan30minutesParkingTime() {
         //Given
@@ -188,7 +178,6 @@ public class FareCalculatorServiceTest {
         //then
         assertEquals(0, ticket.getPrice());
     }
-
     @Test
     public void calculateFareCarWithDiscount() {
         //Given
@@ -207,7 +196,6 @@ public class FareCalculatorServiceTest {
         //then
         assertEquals(0.7125, ticket.getPrice());
     }
-
     @Test
     public void calculateFareBikeWithDiscount() {
         //Given

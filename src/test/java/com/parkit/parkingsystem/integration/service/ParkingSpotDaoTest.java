@@ -1,4 +1,4 @@
-package com.parkit.parkingsystem;
+package com.parkit.parkingsystem.integration.service;
 
 import com.parkit.parkingsystem.constants.ParkingType;
 import com.parkit.parkingsystem.dao.ParkingSpotDAO;
@@ -11,14 +11,14 @@ import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.*;
 
 public class ParkingSpotDaoTest {
-    public static ParkingSpotDAO underTest;
+    public static ParkingSpotDAO ticketTest;
     private static DataBaseTestConfig dataBaseTestConfig = new DataBaseTestConfig();
     private static DataBasePrepareService dataBasePrepareService;
 
     @BeforeAll
     public static void setUp() {
-        underTest = new ParkingSpotDAO();
-        underTest.dataBaseConfig = dataBaseTestConfig;
+        ticketTest = new ParkingSpotDAO();
+        ticketTest.dataBaseConfig = dataBaseTestConfig;
         dataBasePrepareService = new DataBasePrepareService();
     }
 
@@ -27,13 +27,18 @@ public class ParkingSpotDaoTest {
     }
 
     @Test
+    void name() {
+
+    }
+
+    @Test
     public void updateParkingCarTest () {
         //GIVEN
         ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.CAR, true);
 
         //WHEN
-        underTest.updateParking(parkingSpot);
-        int result = underTest.getNextAvailableSlot(ParkingType.CAR);
+        ticketTest.updateParking(parkingSpot);
+        int result = ticketTest.getNextAvailableSlot(ParkingType.CAR);
 
         //THEN
         assertThat(parkingSpot.getId()).isEqualTo(result);
@@ -45,8 +50,8 @@ public class ParkingSpotDaoTest {
         ParkingSpot parkingSpot = new ParkingSpot(4, ParkingType.BIKE, true);
 
         //WHEN
-        underTest.updateParking(parkingSpot);
-        int result = underTest.getNextAvailableSlot(ParkingType.BIKE);
+        ticketTest.updateParking(parkingSpot);
+        int result = ticketTest.getNextAvailableSlot(ParkingType.BIKE);
 
         //THEN
         assertThat(parkingSpot.getId()).isEqualTo(result);
@@ -55,7 +60,7 @@ public class ParkingSpotDaoTest {
     @Test
     public void updateInvalidParkingSpotCarTestShouldReturnFalse()  {
         //GIVEN
-        boolean isUpdated = underTest.updateParking(null);
+        boolean isUpdated = ticketTest.updateParking(null);
         //WHEN > THEN
         assertThat(isUpdated).isEqualTo(false);
     }
@@ -63,7 +68,7 @@ public class ParkingSpotDaoTest {
     @Test
     public void getNextAvailableSlotWithInvalidParkingTypeShouldReturnMinus1 () {
         //GIVEN
-        int result = underTest.getNextAvailableSlot(null);
+        int result = ticketTest.getNextAvailableSlot(null);
         //WHEN > THEN
         assertThat(result).isEqualTo(-1);
     }
@@ -72,13 +77,13 @@ public class ParkingSpotDaoTest {
     public void switchParkingTypeShouldUpdateTest () {
         //GIVEN
         ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.CAR, true);
-        underTest.updateParking(parkingSpot);
+        ticketTest.updateParking(parkingSpot);
 
         //WHEN
-        int parkingNumber = underTest.getNextAvailableSlot(ParkingType.BIKE);
+        int parkingNumber = ticketTest.getNextAvailableSlot(ParkingType.BIKE);
         parkingSpot.setParkingType(ParkingType.BIKE);
         parkingSpot.setId(parkingNumber);
-        boolean result = underTest.updateParking(parkingSpot);
+        boolean result = ticketTest.updateParking(parkingSpot);
 
         //THEN
         assertThat(result).isEqualTo(true);
