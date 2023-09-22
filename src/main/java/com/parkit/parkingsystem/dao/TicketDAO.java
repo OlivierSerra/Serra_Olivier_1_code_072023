@@ -91,17 +91,17 @@ public class TicketDAO {
         return false;
     }
 
-    public boolean getNbTicket(String vehicleRegNumber) {
+    public boolean getSeveralTimeUser(String vehicleRegNumber) {
         Connection con = null;
-        boolean nbTicket = false;
+        boolean SeveralTimeUser = false;
         try {
             con = dataBaseConfig.getConnection();
             PreparedStatement ps = con.prepareStatement(DBConstants.GET_NB_TICKET);
             ps.setString(1, vehicleRegNumber);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                if (rs.getInt(1) >= 2);
-                nbTicket = true;
+                if (rs.getInt(1) >= 2){
+                SeveralTimeUser = true;}
             }
             dataBaseConfig.closeResultSet(rs);
             dataBaseConfig.closePreparedStatement(ps);
@@ -110,6 +110,6 @@ public class TicketDAO {
         } finally {
             dataBaseConfig.closeConnection(con);
         }
-        return nbTicket;
+        return SeveralTimeUser;
     }
 }

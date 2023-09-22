@@ -1,10 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: com.parkit.parkingsystem.integration.service.TicketDaoTest
 -------------------------------------------------------------------------------
-Tests run: 7, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 1.224 s <<< FAILURE! - in com.parkit.parkingsystem.integration.service.TicketDaoTest
-itShouldReturnFalseForNonRecurrentUser  Time elapsed: 0.194 s  <<< FAILURE!
-org.opentest4j.AssertionFailedError: 
-
-Expecting value to be false but was true
-	at com.parkit.parkingsystem.integration.service.TicketDaoTest.itShouldReturnFalseForNonRecurrentUser(TicketDaoTest.java:135)
-
+Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.969 s - in com.parkit.parkingsystem.integration.service.TicketDaoTest

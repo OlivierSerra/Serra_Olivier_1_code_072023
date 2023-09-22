@@ -129,7 +129,7 @@ public class TicketDaoTest {
     @Test
     public void itShouldReturnFalseForNonRecurrentUser(){
         //GIVEN > WHEN
-        Boolean UserManyTime= TicketTest.getNbTicket("XY-ZTU-TB");
+        Boolean UserManyTime= TicketTest.getSeveralTimeUser("XY-ZTU-TB");
 
         //THEN
         assertThat(UserManyTime).isFalse();
@@ -152,7 +152,7 @@ public class TicketDaoTest {
         //WHEN
         TicketTest.saveTicket(ticket);
         TicketTest.saveTicket(ticket);
-        Boolean UserManyTime = TicketTest.getNbTicket("AB-UXD-VZ");
+        Boolean UserManyTime = TicketTest.getSeveralTimeUser("AB-UXD-VZ");
         //THEN
         assertThat(UserManyTime).isTrue();
     }

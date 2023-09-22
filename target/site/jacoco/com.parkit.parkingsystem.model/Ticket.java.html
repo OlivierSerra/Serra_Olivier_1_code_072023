@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Ticket.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">parking-system</a> &gt; <a href="index.source.html" class="el_package">com.parkit.parkingsystem.model</a> &gt; <span class="el_source">Ticket.java</span></div><h1>Ticket.java</h1><pre class="source lang-java linenums">package com.parkit.parkingsystem.model;
+
+import com.parkit.parkingsystem.constants.ParkingType;
+
+import java.util.Calendar;
+import java.util.Date;
+
+<span class="fc" id="L8">public class Ticket {</span>
+    private int id;
+    private ParkingSpot parkingSpot;
+    private String vehicleRegNumber;
+    private double price;
+    private Date inTime;
+    private Date outTime;
+    private boolean discount;
+    //private double discountPrice;
+   
+
+    public int getId() {
+<span class="fc" id="L20">        return id;</span>
+    }
+
+    public void setId(int id) {
+<span class="fc" id="L24">        this.id = id;</span>
+<span class="fc" id="L25">    }</span>
+
+    // !!! les places sont attribués en fonction du type de véhicule. Donc les places appartiennent à des catégories.
+    //Elles ne doivent PAS être attribués peu importe la catégorie de véhicule
+    public ParkingSpot getParkingSpot() {
+        //on va chercher l'identifiant de la place de parking.
+<span class="fc" id="L31">        int ParkingNumberCategorie = parkingSpot.getId();</span>
+        //on va chercher la place de parking associée à la catégorie du véhicule
+<span class="fc" id="L33">        ParkingType SpotCategorie = parkingSpot.getParkingType();</span>
+        //On va chercher une place libre.
+<span class="fc" id="L35">        boolean SpotAvalaible = parkingSpot.isAvailable();</span>
+        //opérateur ternaire pour si la place n'est pas nul alors on génère une nouvelle place de parking sinon c'est nul
+<span class="pc bpc" id="L37" title="1 of 2 branches missed.">        return parkingSpot != null ? new ParkingSpot (ParkingNumberCategorie, SpotCategorie, SpotAvalaible) : null;</span>
+    }
+
+    public void setParkingSpot(ParkingSpot parkingSpot) {
+        //On crée 3 objets pour injecter     un nouvel objet de type parkingSpot
+<span class="fc" id="L42">        int ParkingNumberCategorie = parkingSpot.getId();</span>
+<span class="fc" id="L43">        ParkingType SpotCategorie = parkingSpot.getParkingType();</span>
+<span class="fc" id="L44">        boolean SpotAvalaible = parkingSpot.isAvailable();</span>
+<span class="fc" id="L45">        this.parkingSpot = new ParkingSpot(ParkingNumberCategorie, SpotCategorie, SpotAvalaible);</span>
+<span class="fc" id="L46">    }</span>
+
+
+    public String getVehicleRegNumber() {
+<span class="fc" id="L50">        return vehicleRegNumber;</span>
+    }
+
+    public void setVehicleRegNumber(String vehicleRegNumber) {
+<span class="fc" id="L54">        this.vehicleRegNumber = vehicleRegNumber;</span>
+<span class="fc" id="L55">    }</span>
+
+    public double getPrice() {
+<span class="fc" id="L58">        return price;</span>
+    }
+
+    public void setPrice(double price) {
+<span class="fc" id="L62">        this.price = price;</span>
+<span class="fc" id="L63">    }</span>
+
+    public Date getInTime() {
+<span class="fc" id="L66">        return inTime;</span>
+    }
+
+    public void setInTime(Date inTime) {
+<span class="fc" id="L70">        this.inTime = inTime;</span>
+<span class="fc" id="L71">    }</span>
+
+    public Date getOutTime() {
+<span class="fc" id="L74">        return outTime;</span>
+    }
+
+    public void setOutTime(Date outTime) {
+<span class="fc" id="L78">        this.outTime = outTime;</span>
+<span class="fc" id="L79">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>
